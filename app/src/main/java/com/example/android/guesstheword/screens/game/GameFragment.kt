@@ -28,6 +28,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.android.guesstheword.R
 import com.example.android.guesstheword.databinding.GameFragmentBinding
+import kotlinx.android.synthetic.main.game_fragment.*
 
 /**
  * Fragment where the game is played
@@ -53,16 +54,14 @@ class GameFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
 
         binding.gameViewModel = viewModel
-
+        binding.lifecycleOwner = this
 
 
         viewModel.score.observe(this, Observer { newScore ->
             binding.scoreText.text = newScore.toString()
         })
 
-        viewModel.word.observe(this, Observer { newWord ->
-            binding.wordText.text = newWord
-        })
+
 
         viewModel.eventGameFinish.observe(this, Observer { hasFinished ->
             if (hasFinished) {
@@ -71,7 +70,8 @@ class GameFragment : Fragment() {
             }
         })
         viewModel.timeTofinish.observe(this, Observer { timeToFinish ->
-            Toast.makeText(this.activity, timeToFinish, Toast.LENGTH_SHORT).show()
+            timer_text.text = timeToFinish
+
         })
 
         return binding.root
